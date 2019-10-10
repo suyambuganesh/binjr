@@ -19,6 +19,7 @@ package eu.binjr.sources.jrds.adapters;
 import eu.binjr.core.data.adapters.DataAdapter;
 import eu.binjr.core.data.adapters.TimeSeriesBinding;
 import eu.binjr.core.data.workspace.ChartType;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.UnitPrefixes;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +32,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class JrdsSeriesBindingFactory {
     private static final Logger logger = LogManager.getLogger(JrdsSeriesBindingFactory.class);
-    private static final UnitPrefixes DEFAULT_PREFIX = UnitPrefixes.BINARY;
+    private static final UnitPrefixes DEFAULT_PREFIX = StandardUnitPrefixes.BINARY;
 
     /**
      * Initializes a new instance of the {@link JrdsSeriesBindingFactory} class
@@ -148,10 +149,10 @@ public class JrdsSeriesBindingFactory {
     private UnitPrefixes findPrefix(Graphdesc graphdesc) {
         if (graphdesc.unit != null && graphdesc.unit.size() > 0) {
             if (graphdesc.unit.get(0) instanceof Graphdesc.JrdsMetricUnitType) {
-                return UnitPrefixes.METRIC;
+                return StandardUnitPrefixes.METRIC;
             }
             if (graphdesc.unit.get(0) instanceof Graphdesc.JrdsBinaryUnitType) {
-                return UnitPrefixes.BINARY;
+                return StandardUnitPrefixes.BINARY;
             }
         }
         return DEFAULT_PREFIX;

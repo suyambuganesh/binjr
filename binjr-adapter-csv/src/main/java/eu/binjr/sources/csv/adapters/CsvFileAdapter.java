@@ -28,8 +28,8 @@ import eu.binjr.core.data.exceptions.InvalidAdapterParameterException;
 import eu.binjr.core.data.timeseries.DoubleTimeSeriesProcessor;
 import eu.binjr.core.data.timeseries.TimeSeriesProcessor;
 import eu.binjr.core.data.workspace.ChartType;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.TimeSeriesInfo;
-import eu.binjr.core.data.workspace.UnitPrefixes;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TreeItem;
 import org.apache.logging.log4j.LogManager;
@@ -116,7 +116,7 @@ public class CsvFileAdapter extends BaseDataAdapter {
                         "/",
                         null,
                         getSourceName(),
-                        UnitPrefixes.METRIC,
+                        StandardUnitPrefixes.METRIC,
                         ChartType.STACKED,
                         "-",
                         "/" + getSourceName(), this));
@@ -128,7 +128,7 @@ public class CsvFileAdapter extends BaseDataAdapter {
                         header,
                         null,
                         header,
-                        UnitPrefixes.METRIC,
+                        StandardUnitPrefixes.METRIC,
                         ChartType.STACKED,
                         "-",
                         "/" + getSourceName() + "/" + header,

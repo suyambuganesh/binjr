@@ -23,8 +23,8 @@ import eu.binjr.core.data.exceptions.FetchingDataFromAdapterException;
 import eu.binjr.core.data.timeseries.DoubleTimeSeriesProcessor;
 import eu.binjr.core.data.timeseries.TimeSeriesProcessor;
 import eu.binjr.core.data.workspace.ChartType;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.TimeSeriesInfo;
-import eu.binjr.core.data.workspace.UnitPrefixes;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TreeItem;
 import org.apache.logging.log4j.LogManager;
@@ -84,7 +84,7 @@ public class Rrd4jFileAdapter extends BaseDataAdapter {
                         "/",
                         null,
                         getSourceName(),
-                        UnitPrefixes.METRIC,
+                        StandardUnitPrefixes.METRIC,
                         ChartType.STACKED,
                         "-",
                         "/" + getSourceName(), this));
@@ -96,7 +96,7 @@ public class Rrd4jFileAdapter extends BaseDataAdapter {
                         rrdFileName,
                         null,
                         rrdFileName,
-                        UnitPrefixes.METRIC,
+                        StandardUnitPrefixes.METRIC,
                         ChartType.STACKED,
                         "-",
                         tree.getValue().getTreeHierarchy() + "/" + rrdFileName,
@@ -111,7 +111,7 @@ public class Rrd4jFileAdapter extends BaseDataAdapter {
                             rrdPath.resolve(consolFun.toString()).toString(),
                             null,
                             consolFun.toString(),
-                            UnitPrefixes.METRIC,
+                            StandardUnitPrefixes.METRIC,
                             ChartType.STACKED,
                             "-",
                             rrdNode.getValue().getTreeHierarchy() + "/" + consolFun.toString(),
@@ -123,7 +123,7 @@ public class Rrd4jFileAdapter extends BaseDataAdapter {
                                 consolFunNode.getValue().getPath(),
                                 null,
                                 ds,
-                                UnitPrefixes.METRIC,
+                                StandardUnitPrefixes.METRIC,
                                 ChartType.STACKED,
                                 "-",
                                 consolFunNode.getValue().getTreeHierarchy() + "/" + ds,

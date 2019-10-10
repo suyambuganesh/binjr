@@ -14,13 +14,21 @@
  *    limitations under the License.
  */
 
-package eu.binjr.core.data.workspace;
 
-import eu.binjr.common.text.PrefixFormatter;
+package eu.binjr.common.javafx.controls.timeseriesbrowser;
 
-public interface UnitPrefixes {
+import com.sun.javafx.scene.control.behavior.BehaviorBase;
+import com.sun.javafx.scene.control.inputmap.InputMap;
+
+public class TimeSeriesBrowserBehavior extends BehaviorBase<TimeSeriesBrowser> {
+
+
+    public TimeSeriesBrowserBehavior(TimeSeriesBrowser node) {
+        super(node);
+    }
+
     @Override
-    String toString();
-
-    PrefixFormatter getFormatter();
+    public InputMap getInputMap() {
+        return null;
+    }
 }

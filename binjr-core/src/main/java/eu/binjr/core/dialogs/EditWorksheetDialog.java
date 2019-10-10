@@ -17,6 +17,7 @@
 package eu.binjr.core.dialogs;
 
 import eu.binjr.core.data.workspace.ChartType;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.UnitPrefixes;
 import eu.binjr.core.data.workspace.Worksheet;
 import eu.binjr.common.javafx.controls.ZonedDateTimePicker;
@@ -107,7 +108,7 @@ public class EditWorksheetDialog extends Dialog<Worksheet> {
             chartTypeChoice.getSelectionModel().select(resultWorksheet.getDefaultChart().getChartType());
             resultWorksheet.getDefaultChart().chartTypeProperty().bind(chartTypeChoice.getSelectionModel().selectedItemProperty());
 
-            unitPrefixesChoice.getItems().setAll(UnitPrefixes.values());
+            unitPrefixesChoice.getItems().setAll(StandardUnitPrefixes.values());
             unitPrefixesChoice.getSelectionModel().select(resultWorksheet.getDefaultChart().getUnitPrefixes());
             resultWorksheet.getDefaultChart().unitPrefixesProperty().bind(unitPrefixesChoice.getSelectionModel().selectedItemProperty());
 

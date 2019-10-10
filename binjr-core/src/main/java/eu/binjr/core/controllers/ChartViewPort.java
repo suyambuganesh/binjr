@@ -21,6 +21,7 @@ import eu.binjr.common.text.BinaryPrefixFormatter;
 import eu.binjr.common.text.MetricPrefixFormatter;
 import eu.binjr.common.text.PrefixFormatter;
 import eu.binjr.core.data.workspace.Chart;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.TimeSeriesInfo;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -63,17 +64,7 @@ public class ChartViewPort implements Closeable {
         this.seriesTable.getStyleClass().add("skinnable-pane-border");
         this.seriesTable.setEditable(true);
         this.propertiesController = propertiesController;
-        switch (dataStore.getUnitPrefixes()) {
-            case BINARY:
-                this.prefixFormatter = new BinaryPrefixFormatter();
-                break;
-            case METRIC:
-                this.prefixFormatter = new MetricPrefixFormatter();
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unknown unit prefix");
-        }
+        this.prefixFormatter = dataStore.getUnitPrefixes().getFormatter();
     }
 
     /**

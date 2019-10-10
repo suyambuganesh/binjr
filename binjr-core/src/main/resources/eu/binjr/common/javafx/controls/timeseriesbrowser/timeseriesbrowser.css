@@ -1,0 +1,3 @@
+.time-series-browser{
+    -fx-skin: "eu.binjr.common.javafx.controls.timeseriesbrowser.TimeSeriesBrowserSkin"
+}

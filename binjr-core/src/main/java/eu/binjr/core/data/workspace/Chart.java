@@ -89,7 +89,7 @@ public class Chart implements Dirtyable, AutoCloseable {
                 ChartType.STACKED,
                 FXCollections.observableList(new LinkedList<>()),
                 "-",
-                UnitPrefixes.METRIC,
+                StandardUnitPrefixes.METRIC,
                 UserPreferences.getInstance().defaultGraphOpacity.get().doubleValue(),
                 UserPreferences.getInstance().showAreaOutline.get(),
                 1.0,

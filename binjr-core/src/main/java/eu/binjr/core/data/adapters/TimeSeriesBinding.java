@@ -17,6 +17,7 @@
 package eu.binjr.core.data.adapters;
 
 import eu.binjr.core.data.workspace.ChartType;
+import eu.binjr.core.data.workspace.StandardUnitPrefixes;
 import eu.binjr.core.data.workspace.UnitPrefixes;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
@@ -99,7 +100,7 @@ public class TimeSeriesBinding {
         this.path = "";
         this.color = null;
         this.legend = "";
-        this.prefix = UnitPrefixes.BINARY;
+        this.prefix = StandardUnitPrefixes.BINARY;
         this.graphType = ChartType.STACKED;
         this.unitName = "";
         this.adapter = null;

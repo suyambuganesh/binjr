@@ -323,7 +323,7 @@ public class WorksheetController implements Initializable, AutoCloseable {
                     break;
             }
             StableTicksAxis yAxis;
-            if (currentChart.getUnitPrefixes() == UnitPrefixes.BINARY) {
+            if (currentChart.getUnitPrefixes() == StandardUnitPrefixes.BINARY) {
                 yAxis = new BinaryStableTicksAxis();
             } else {
                 yAxis = new MetricStableTicksAxis();
@@ -816,7 +816,7 @@ public class WorksheetController implements Initializable, AutoCloseable {
             TextField unitNameField = new TextField();
             unitNameField.textProperty().bindBidirectional(currentViewPort.getDataStore().unitProperty());
             ChoiceBox<UnitPrefixes> unitPrefixChoiceBox = new ChoiceBox<>();
-            unitPrefixChoiceBox.getItems().setAll(UnitPrefixes.values());
+            unitPrefixChoiceBox.getItems().setAll(StandardUnitPrefixes.values());
             unitPrefixChoiceBox.getSelectionModel().select(currentViewPort.getDataStore().getUnitPrefixes());
             bindingManager.bind(currentViewPort.getDataStore().unitPrefixesProperty(), unitPrefixChoiceBox.getSelectionModel().selectedItemProperty());
             HBox.setHgrow(chartNameField, Priority.ALWAYS);
@@ -936,14 +936,25 @@ public class WorksheetController implements Initializable, AutoCloseable {
     }
 
     private void moveChartOrder(Chart chart, int pos) {
-        int idx = worksheet.getCharts().indexOf(chart);
-        this.preventReload = true;
-        try {
-            worksheet.getCharts().remove(chart);
-        } finally {
-            this.preventReload = false;
-        }
-        worksheet.getCharts().add(idx + pos, chart);
+
+        viewPorts.stream().filter(v -> v.getDataStore().equals(chart)).map(v->v.getChart()).findFirst().ifPresent(c -> {
+
+                        VBox vbox = (VBox) c.getParent();
+                        var i = vbox.getChildren().indexOf(c);
+                        vbox.getChildren().remove(c);
+                        vbox.getChildren().add(i+pos, c);
+
+                }
+        );
+
+//        int idx = worksheet.getCharts().indexOf(chart);
+//        this.preventReload = true;
+//        try {
+//            worksheet.getCharts().remove(chart);
+//        } finally {
+//            this.preventReload = false;
+//        }
+//        worksheet.getCharts().add(idx + pos, chart);
     }
 
     private void handleDragOverWorksheetView(DragEvent event) {
@@ -1257,7 +1268,8 @@ public class WorksheetController implements Initializable, AutoCloseable {
         }
     }
 
-    private void plotChart(ChartViewPort viewPort, XYChartSelection<ZonedDateTime, Double> currentSelection, boolean forceRefresh) {
+    private void plotChart(ChartViewPort viewPort, XYChartSelection<ZonedDateTime, Double> currentSelection,
+                           boolean forceRefresh) {
         try (Profiler p = Profiler.start("Adding series to chart " + viewPort.getDataStore().getName(), logger::trace)) {
             nbBusyPlotTasks.setValue(nbBusyPlotTasks.get() + 1);
             AsyncTaskManager.getInstance().submit(() -> {
@@ -1414,7 +1426,8 @@ public class WorksheetController implements Initializable, AutoCloseable {
         }
     }
 
-    private void restoreSelectionFromHistory(WorksheetNavigationHistory history, WorksheetNavigationHistory toHistory) {
+    private void restoreSelectionFromHistory(WorksheetNavigationHistory history, WorksheetNavigationHistory
+            toHistory) {
         if (!history.isEmpty()) {
             toHistory.push(currentState.asSelection());
             currentState.setSelection(history.pop(), false);
