@@ -47,6 +47,39 @@ stages:
           pool:
             vmImage: 'windows-2019'
 
+      # Finalize release
+  - stage: release
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    jobs:
+    - job: finalize_release
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+        - task: GithubRelease@0
+          condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+          inputs:
+            gitHubConnection: binjr-bot
+            repositoryName: binjr/binjr
+            action: edit
+            tag: $(Build.SourceBranchName)
+            assets: $(System.DefaultWorkingDirectory)/distribution/publishing/*.asc
+            assetUploadMode: 'replace'
+            releaseNotesSource: 'file'
+            addChangeLog: false
+        - bash: |
+            git clone https://github.com/binjr/binjr.github.io build/tmp/binjr.github.io
+            cd  build/tmp/binjr.github.io
+            cp ../info/CHANGELOG.md CHANGELOG.md
+            git config credential.helper store
+            echo "https://binjr-bot:$GH_ACCESS_TOKEN@github.com" >> "$HOME/.git-credentials"
+            git config user.email "binjr.bot@free.fr"
+            git config user.name "binjr-bot"
+            wget https://api.github.com/repos/binjr/binjr/releases/latest -O repos/binjr/binjr/releases/latest
+            git commit -am "Release  $BUILD_SOURCEBRANCHNAME"
+            git push
+          env:
+            GH_ACCESS_TOKEN: $(gh.access.token)
+
   - stage: publish
     jobs:
     # Publish to Maven repo
@@ -73,28 +106,3 @@ stages:
             publishJUnitResults: false
             options: '-Dorg.gradle.internal.publish.checksums.insecure=true'
             tasks: 'copyInfo publishArtifacts'
-        - task: GithubRelease@0
-          condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-          inputs:
-            gitHubConnection: binjr-bot
-            repositoryName: binjr/binjr
-            action: edit
-            tag: $(Build.SourceBranchName)
-            assets: $(System.DefaultWorkingDirectory)/distribution/publishing/*.asc
-            assetUploadMode: 'replace'
-            releaseNotesSource: 'file'
-            addChangeLog: false
-        - bash: |
-            git clone https://github.com/binjr/binjr.github.io build/tmp/binjr.github.io
-            cd  build/tmp/binjr.github.io
-            cp ../info/CHANGELOG.md CHANGELOG.md
-            git config credential.helper store
-            echo "https://binjr-bot:$GH_ACCESS_TOKEN@github.com" >> "$HOME/.git-credentials"
-            git config user.email "binjr.bot@free.fr"
-            git config user.name "binjr-bot"
-            wget https://api.github.com/repos/binjr/binjr/releases/latest -O repos/binjr/binjr/releases/latest
-            git commit -am "Release  $BUILD_SOURCEBRANCHNAME"
-            git push
-          env:
-            GH_ACCESS_TOKEN: $(gh.access.token)
-          condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
